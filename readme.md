@@ -106,3 +106,13 @@ return [
 ``` bash
 $ composer test
 ```
+
+## Security
+
+If you discover any security related issues, please email security@swis.nl instead of using the issue tracker.
+
+## Credits
+
+This package is a fork of [dansoppelsa/carwash](https://github.com/dansoppelsa/carwash) with updated Laravel support.
+
+- [All Contributors][../../contributors]
