@@ -115,7 +115,7 @@ If you discover any security related issues, please email security@swis.nl inste
 
 This package is a fork of [dansoppelsa/carwash](https://github.com/dansoppelsa/carwash) with updated Laravel support.
 
-- [All Contributors][../../contributors]
+- [All Contributors](../../contributors)
 
 ## License
 
