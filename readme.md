@@ -51,7 +51,7 @@ return [
 
 #### 3. Run Scrub Command
 
-```php
+```
 php artisan carwash:scrub
 ```
 
