@@ -29,6 +29,9 @@
             "email": "dsoppelsa@gmail.com"
         }
     ],
+    "scripts": {
+        "test": "phpunit"
+    },
     "extra": {
         "laravel": {
             "providers": [

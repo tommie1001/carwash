@@ -100,3 +100,9 @@ return [
     },
 ];
 ```
+
+## Testing
+
+``` bash
+$ composer test
+```
