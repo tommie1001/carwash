@@ -1,5 +1,9 @@
 # Carwash
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/swisnl/carwash.svg?style=flat-square)](https://packagist.org/packages/swisnl/carwash)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/swisnl/carwash/master.svg?style=flat-square)](https://travis-ci.org/swisnl/carwash)
+
 **Carwash** is a data scrubbing utility for **Laravel** applications
 
 ## Installation
