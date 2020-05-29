@@ -6,7 +6,7 @@
 
 #### Install via composer
 ```
-composer require dansoppelsa/carwash
+composer require swisnl/carwash
 ```
 
 ## Usage
