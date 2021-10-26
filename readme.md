@@ -40,7 +40,7 @@ return [
     ]
 ];
 ``` 
-**Carwash** uses the fabulous [Faker](https://github.com/fzaninotto/Faker) package under the hood to generate replacement data. Please refer to the Faker documentation for a complete list of [available formatters](https://github.com/fzaninotto/Faker#formatters).
+**Carwash** uses the fabulous [Faker](https://fakerphp.github.io/) package under the hood to generate replacement data. Please refer to the Faker documentation for a complete list of [available formatters](https://fakerphp.github.io/formatters/).
 
 More generally, the format of the **Carwash** config file is:
 ```php
