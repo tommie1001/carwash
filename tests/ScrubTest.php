@@ -2,6 +2,7 @@
 
 use Faker\Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Assert;
 
 class ScrubTest extends TestCase
 {
@@ -37,18 +38,11 @@ class ScrubTest extends TestCase
 
     public function testThatFormattersCanBeAnInvokableClass()
     {
-        $formatter = new class ($this)
+        $formatter = new class ()
         {
-            private $test;
-
-            public function __construct(TestCase $test)
-            {
-                $this->test = $test;
-            }
-
             public function __invoke($faker, $attribute)
             {
-                $this->test->assertEquals('George', $attribute);
+                Assert::assertEquals('George', $attribute);
 
                 return 'Foo';
             }
@@ -57,6 +51,37 @@ class ScrubTest extends TestCase
         $this->app->config['carwash'] = [
             'users' => [
                 'first_name' => $formatter,
+            ],
+        ];
+
+        $this->addUser([
+            'id' => 1,
+            'first_name' => 'George',
+            'last_name' => 'Costanza',
+            'email' => 'gcostanza@hotmail.com',
+        ]);
+
+        $this->artisan('carwash:scrub');
+
+        $user1 = $this->findUser(1);
+        $this->assertEquals('Foo', $user1->first_name);
+    }
+
+    public function testThatFormattersCanBeAnInvokableClassString()
+    {
+        $formatter = new class ()
+        {
+            public function __invoke($faker, $attribute)
+            {
+                Assert::assertEquals('George', $attribute);
+
+                return 'Foo';
+            }
+        };
+
+        $this->app->config['carwash'] = [
+            'users' => [
+                'first_name' => get_class($formatter),
             ],
         ];
 
@@ -103,31 +128,67 @@ class ScrubTest extends TestCase
             'email' => 'gcostanza@hotmail.com',
         ];
 
-        $this->app['config']['carwash'] = [
-            'users' => new class ($this, $user)
+        $formatter = new class ($user) {
+            private $user;
+
+            public function __construct(array $user)
             {
-                private $test;
-                private $user;
-
-                public function __construct(TestCase $test, array $user)
-                {
-                    $this->test = $test;
-                    $this->user = $user;
-                }
-
-                public function __invoke($faker, $record)
-                {
-                    $this->test->assertInstanceOf(Generator::class, $faker);
-                    $this->test->assertEquals($this->user['id'], $record['id']);
-                    $this->test->assertEquals($this->user['first_name'], $record['first_name']);
-                    $this->test->assertEquals($this->user['last_name'], $record['last_name']);
-                    $this->test->assertEquals($this->user['email'], $record['email']);
-
-                    return [
-                        'first_name' => 'Foo'
-                    ];
-                }
+                $this->user = $user;
             }
+
+            public function __invoke($faker, $record)
+            {
+                Assert::assertInstanceOf(Generator::class, $faker);
+                Assert::assertEquals($this->user['id'], $record['id']);
+                Assert::assertEquals($this->user['first_name'], $record['first_name']);
+                Assert::assertEquals($this->user['last_name'], $record['last_name']);
+                Assert::assertEquals($this->user['email'], $record['email']);
+
+                return [
+                    'first_name' => 'Foo'
+                ];
+            }
+        };
+
+        $this->app['config']['carwash'] = [
+            'users' => $formatter,
+        ];
+
+        $this->addUser($user);
+
+        $this->artisan('carwash:scrub');
+
+        $user1 = $this->findUser(1);
+
+        $this->assertEquals('Foo', $user1->first_name);
+    }
+
+    public function testThatTheTableConfigurationCanBeAnInvokableClassString()
+    {
+        $user = [
+            'id' => 1,
+            'first_name' => 'George',
+            'last_name' => 'Costanza',
+            'email' => 'gcostanza@hotmail.com',
+        ];
+
+        $formatter = new class () {
+            public function __invoke($faker, $record)
+            {
+                Assert::assertInstanceOf(Generator::class, $faker);
+                Assert::assertEquals(1, $record['id']);
+                Assert::assertEquals('George', $record['first_name']);
+                Assert::assertEquals('Costanza', $record['last_name']);
+                Assert::assertEquals('gcostanza@hotmail.com', $record['email']);
+
+                return [
+                    'first_name' => 'Foo'
+                ];
+            }
+        };
+
+        $this->app['config']['carwash'] = [
+            'users' => get_class($formatter),
         ];
 
         $this->addUser($user);

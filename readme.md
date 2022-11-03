@@ -72,7 +72,7 @@ return [
         'name' => function ($faker, $currentValue) {
             return "{$faker->firstName} {$faker->lastName}";
         },
-        'bio' => new BioFormatter
+        'bio' => BioFormatter::class
     ]
 ];
 
